@@ -16,8 +16,8 @@ export class CategorysController {
         return await this.categorysService.FindAllCategorys();
     }
     @Post('/them-moi-loai-san-pham')
-    async createCategory(@Body() newCategoryDto: newCategoryDto): Promise<Categorys> {
-        return await this.categorysService.CreateCategorys(newCategoryDto);
+    async createCategory(@Query('name') name:string): Promise<Categorys> {
+        return await this.categorysService.CreateCategorys(name);
     }
     @Put('/cap-nhat-loai-san-pham-theo-ten')
     async updateCategory(@Query('name') name:string,@Query('NewName')NewName:string): Promise<{ message: string }> {

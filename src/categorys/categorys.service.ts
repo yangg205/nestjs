@@ -9,9 +9,9 @@ import { deleteCategoryDto } from './dto/deleCategory.dto';
 @Injectable()
 export class CategorysService {
     constructor(@InjectModel(Categorys.name) private CategorysModel: Model<CategorysDocument>) { }
-    async CreateCategorys(newCategoryDto: newCategoryDto): Promise<Categorys> {
+    async CreateCategorys(name:string): Promise<Categorys> {
         try {
-            const checkname = this.CategorysModel.findOne({ name: newCategoryDto.name });
+            const checkname = this.CategorysModel.findOne({ name: name });
             if (!checkname) {
                 throw new HttpException('loai san pham da ton tai', 400)
             }
