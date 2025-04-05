@@ -39,9 +39,9 @@ export class ProductService {
             throw new HttpException(error.message, 500)
         }
     }
-    async DeleteByName(deleteProductDto: deleteProductDto): Promise<{ message: string }> {
+    async DeleteByName(name: string): Promise<{ message: string }> {
         try {
-            const result = await this.productModel.deleteOne({ name: deleteProductDto.name });
+            const result = await this.productModel.deleteOne({ name: name });
             if (result.deletedCount === 0) {
                 throw new HttpException('xoa that bai', 500);
             }
@@ -72,9 +72,9 @@ export class ProductService {
             throw new HttpException(error.message, 500)
         }
     }
-    async FindByName(deleteProductDto: deleteProductDto): Promise<Product[]> {
+    async FindByName(name:string): Promise<Product[]> {
         try {
-            const nameRegex = new RegExp(deleteProductDto.name, 'i'); // 'i' de khong phan biet chu hoa va thuong
+            const nameRegex = new RegExp(name, 'i'); // 'i' de khong phan biet chu hoa va thuong
             const products = await this.productModel
                 .find({ name: { $regex: nameRegex } })
                 .populate('type', '-_id')
@@ -89,9 +89,9 @@ export class ProductService {
             throw new HttpException(error.message, 500)
         }
     }
-    async FindByPrice(PriceProductDto: PriceProductDto): Promise<Product[]> {
+    async FindByPrice(price: number): Promise<Product[]> {
         try {
-            const products = await this.productModel.find({ price: PriceProductDto.price }).populate('type', '-_id').exec();//tim san pham theo gia
+            const products = await this.productModel.find({ price: price }).populate('type', '-_id').exec();//tim san pham theo gia
             if (products.length === 0) {
                 throw new HttpException('khong co san pham nao', 404)
             }
@@ -102,9 +102,9 @@ export class ProductService {
             throw new HttpException(error.message, 500)
         }
     }
-    async FindByHigherPrice(PriceProductDto: PriceProductDto): Promise<Product[]> {
+    async FindByHigherPrice(price:number): Promise<Product[]> {
         try {
-            const products = await this.productModel.find({ price: { $gte: PriceProductDto.price } }).populate('type', '-_id').exec();//tim cac product lon hon gia nhap vao
+            const products = await this.productModel.find({ price: { $gte: price } }).populate('type', '-_id').exec();//tim cac product lon hon gia nhap vao
             if (products.length === 0) {
                 throw new HttpException('khong co san pham nao', 404)
             }
@@ -141,13 +141,13 @@ export class ProductService {
             throw new HttpException(error.message, 500)
         }
     }
-    async FindByPriceAbout(AboutPriceProductDto: AboutPriceProductDto): Promise<Product[]> {
+    async FindByPriceAbout(pricestart:number,priceend:number): Promise<Product[]> {
         try {
             //lte la nho hon hoac bang
             //gte la lon hon hoac bang
             //lt la nho hon
             //gt la lon hon
-            const products = await this.productModel.find({ price: { $gte: AboutPriceProductDto.pricestart, $lte: AboutPriceProductDto.priceend } }).populate('type', '-_id').exec();//tim cac product nho hon gia nhap vao
+            const products = await this.productModel.find({ price: { $gte: pricestart, $lte: priceend } }).populate('type', '-_id').exec();//tim cac product nho hon gia nhap vao
             if (products.length === 0) {
                 throw new HttpException('khong co san pham nao', 404)
             }
@@ -158,9 +158,9 @@ export class ProductService {
             throw new HttpException(error.message, 500)
         }
     }
-    async FindByPriceLess(PriceProductDto: PriceProductDto): Promise<Product[]> {
+    async FindByPriceLess(price:number): Promise<Product[]> {
         try {
-            const products = await this.productModel.find({ price: { $lte: PriceProductDto.price } }).populate('type', '-_id').exec();//tim cac product nho hon gia nhap vao
+            const products = await this.productModel.find({ price: { $lte: price } }).populate('type', '-_id').exec();//tim cac product nho hon gia nhap vao
             if (products.length === 0) {
                 throw new HttpException('khong co san pham nao', 404)
             }

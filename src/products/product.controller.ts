@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Post, Put } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Post, Put, Query } from "@nestjs/common";
 import { ProductService } from "./product.service";
 import { Product } from "./schema/product.schema";
 import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
@@ -8,6 +8,7 @@ import { deleteProductDto } from "./dto/deleProduct.dto";
 import { PriceProductDto } from "./dto/priceProduct.dto";
 import { AboutPriceProductDto } from "./dto/aboutpriceProduct.dto";
 import { NameCategoryDto } from "./dto/nameCategory.dto";
+import { query } from "express";
 
 @Controller('products')
 @ApiTags('Products')
@@ -26,28 +27,28 @@ export class ProductController{
         return this.productservice.UpdateTypeByName(updateProductDto);
     }
     @Delete('/xoa-san-pham-theo-ten')
-    async DeleteByName(@Body() deleteProductDto: deleteProductDto):Promise<{message: string}>{
-        return this.productservice.DeleteByName(deleteProductDto);
+    async DeleteByName(@Query('name') name:string):Promise<{message: string}>{
+        return this.productservice.DeleteByName(name);
     }
-    @Post('/tim-kiem-theo-ten')
-    async findByName(@Body() deleteProductDto:deleteProductDto): Promise<Product[]> {
-        return await this.productservice.FindByName(deleteProductDto);
+    @Get('/tim-kiem-theo-ten')
+    async findByName(@Query('name') name:string): Promise<Product[]> {
+        return await this.productservice.FindByName(name);
     }
-    @Post('/tim-kiem-theo-gia')
-    async findByPrice(@Body() priceProductDto: PriceProductDto): Promise<Product[]> {
-        return await this.productservice.FindByPrice(priceProductDto);
+    @Get('/tim-kiem-theo-gia')
+    async findByPrice(@Query('price') price:number): Promise<Product[]> {
+        return await this.productservice.FindByPrice(price);
     }
-    @Post('/tim-kiem-theo-gia-cao-hon')
-    async findByPriceHigher(@Body() priceProductDto: PriceProductDto): Promise<Product[]> {
-        return await this.productservice.FindByHigherPrice(priceProductDto);
+    @Get('/tim-kiem-theo-gia-cao-hon')
+    async findByPriceHigher(@Query('price') price:number): Promise<Product[]> {
+        return await this.productservice.FindByHigherPrice(price);
     }
-    @Post('/tim-kiem-theo-gia-thap-hon')
-    async findByPriceLower(@Body() priceProductDto: PriceProductDto): Promise<Product[]> {
-        return await this.productservice.FindByPriceLess(priceProductDto);
+    @Get('/tim-kiem-theo-gia-thap-hon')
+    async findByPriceLower(@Query('price') price:number): Promise<Product[]> {
+        return await this.productservice.FindByPriceLess(price);
     }
-    @Post('/tim-kiem-theo-khoang-gia')
-    async findByPriceRange(@Body() aboutPriceProductDto: AboutPriceProductDto): Promise<Product[]> {
-        return await this.productservice.FindByPriceAbout(aboutPriceProductDto);
+    @Get('/tim-kiem-theo-khoang-gia')
+    async findByPriceRange(@Query('StartPrice') StartPrice:number, @Query('EndPrice') EndPrice:number): Promise<Product[]> {
+        return await this.productservice.FindByPriceAbout(StartPrice, EndPrice);
     }
     @Get('/san-pham-gia-cao-nhat')
     async findMaxPrice(): Promise<Product> {
