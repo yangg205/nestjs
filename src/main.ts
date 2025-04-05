@@ -22,6 +22,6 @@ async function bootstrap() {
     module.hot.dispose(() => app.close());
   }
   app.useGlobalPipes(new ValidationPipe());
-  await app.listen(3001);
+  await app.listen(3002);
 }
 bootstrap();
