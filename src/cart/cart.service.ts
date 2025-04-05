@@ -113,9 +113,9 @@ export class CartService {
   }
 
   //xoa toan bo gio hang
-  async deleteCartsByName(DeleteCartDto:DeleteCartDto): Promise<any> {
+  async deleteCartsByName(name:string): Promise<any> {
     try {
-      const result = await this.CartModel.deleteOne({name:DeleteCartDto.name});
+      const result = await this.CartModel.deleteOne({name:name});
       if(result.deletedCount === 0){
         throw new HttpException('xoa that bai', 404);
       }

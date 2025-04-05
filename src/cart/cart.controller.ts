@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Post, Put, Query } from '@nestjs/common';
 import { CartService } from './cart.service';
 import { Cart } from './schema/cart.schema';
 import { NewCartDto } from './dto/newcart.dto';
@@ -20,7 +20,7 @@ export class CartController {
         return await this.cartService.updateCart(newCartDto);
     }
     @Delete('/xoa-gio-hang-bang-ten')
-    async deleteCartsByName(@Body() DeleteCartDto:DeleteCartDto): Promise<any> {
-        return await this.cartService.deleteCartsByName(DeleteCartDto);
+    async deleteCartsByName(@Query('name') name:string): Promise<any> {
+        return await this.cartService.deleteCartsByName(name);
     }
 }
