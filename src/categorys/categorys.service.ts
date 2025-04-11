@@ -9,7 +9,7 @@ import { deleteCategoryDto } from './dto/deleCategory.dto';
 @Injectable()
 export class CategorysService {
     constructor(@InjectModel(Categorys.name) private CategorysModel: Model<CategorysDocument>) { }
-    async CreateCategorys(name:string): Promise<Categorys> {
+    async CreateCategorys(name: string): Promise<Categorys> {
         try {
             const checkname = this.CategorysModel.findOne({ name: name });
             if (!checkname) {
@@ -31,27 +31,27 @@ export class CategorysService {
             throw new HttpException(error.message, 500)
         }
     }
-    async UpdateCategoryByName(name:string,newName:string): Promise<{ message: string }> {
-        try{
-            const checkname = await this.CategorysModel.findOne({name:name});
-            if(!checkname){
-                throw new HttpException('loai san pham khong ton tai',404);
+    async UpdateCategoryByName(name: string, newName: string): Promise<{ message: string }> {
+        try {
+            const checkname = await this.CategorysModel.findOne({ name: name });
+            if (!checkname) {
+                throw new HttpException('loai san pham khong ton tai', 404);
             }
             const updateCategory = await this.CategorysModel.updateOne(
-                {name:updateNameCategoryDto.name},
-                {$set:{name:newName}}
+                { name: updateNameCategoryDto.name },
+                { $set: { name: newName } }
             );
-            if(updateCategory.modifiedCount===0){
-                throw new HttpException('cap nhat that bai',500);
+            if (updateCategory.modifiedCount === 0) {
+                throw new HttpException('cap nhat that bai', 500);
             }
-            return {message: "cap nhat thanh cong"};
+            return { message: "cap nhat thanh cong" };
         }
-        catch(error){
+        catch (error) {
             console.log(error);
-            throw new HttpException(error.message,500);
+            throw new HttpException(error.message, 500);
         }
     }
-    async DeleteCategoryByName(name:string): Promise<{ message: string }> {
+    async DeleteCategoryByName(name: string): Promise<{ message: string }> {
         try {
             const deleteCategory = await this.CategorysModel.deleteOne({ name: name });
             if (deleteCategory.deletedCount === 0) {
