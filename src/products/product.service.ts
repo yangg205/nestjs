@@ -43,7 +43,8 @@ export class ProductService {
       const matchStage: any = {};
 
       if (filters.name) {
-        matchStage.name = { $regex: filters.name, $options: 'i' };//'i' để không phân biệt chữ hoa và chữ thường
+        //regex để tìm kiếm trong mongodb theo dạng chuỗi ký tự
+        matchStage.name = { $regex: filters.name, $options: 'i' };//option: 'i' để không phân biệt chữ hoa và chữ thường
       }
 
       if (filters.startPrice !== undefined && filters.endPrice !== undefined) {
@@ -56,15 +57,15 @@ export class ProductService {
 
       // Thêm stage match vào pipeline nếu có bộ lọc
       if (Object.keys(matchStage).length > 0) {
-        pipeline.push({ $match: matchStage });
+        pipeline.push({ $match: matchStage });//$match lọc dữ liệu từ collection products dựa trên điều kiện.
       }
 
       // Liên kết với collection categorys để lấy thông tin type
       pipeline.push({
         $lookup: {
           from: 'categorys',
-          localField: 'type',
-          foreignField: '_id',
+          localField: 'type',//Trường trong products
+          foreignField: '_id',//Trường trong categorys để so khớp với trường type trong product
           as: 'type',
         },
       });
